@@ -48,6 +48,13 @@ export const Content = styled.div`
       margin: 8px 0 15px;
     }
 
+    span {
+      color: #fb6f91;
+      align-self: flex-start;
+      margin: 0 0 10px;
+      font-weight: bold;
+    }
+
     button {
       height: 44px;
       background: #ee4d64;

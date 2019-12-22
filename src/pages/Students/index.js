@@ -26,6 +26,32 @@ export default function Students() {
               <th>IDADE</th>
             </tr>
           </thead>
+          <tbody>
+            <tr>
+              <td>Cha Ji-Hun</td>
+              <td>example@teste.com</td>
+              <td>20</td>
+              <td>editar | apagar</td>
+            </tr>
+            <tr>
+              <td>Cha Ji-Hun</td>
+              <td>example@teste.com</td>
+              <td>20</td>
+              <td>editar | apagar</td>
+            </tr>
+            <tr>
+              <td>Cha Ji-Hun</td>
+              <td>example@teste.com</td>
+              <td>20</td>
+              <td>editar | apagar</td>
+            </tr>
+            <tr>
+              <td>Cha Ji-Hun</td>
+              <td>example@teste.com</td>
+              <td>20</td>
+              <td>editar | apagar</td>
+            </tr>
+          </tbody>
         </Table>
       </ContentWrapper>
     </Container>
