@@ -2,6 +2,6 @@ import React from 'react';
 
 // import { Container } from './styles';
 
-export default function EditEnrollment() {
-  return <div />;
+export default function StudentForm() {
+  return <h1>add</h1>;
 }

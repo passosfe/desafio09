@@ -4,15 +4,12 @@ import Route from './Route';
 
 import SignIn from '~/pages/Login';
 
-import ListStudents from '~/pages/Students/List';
-import AddStudent from '~/pages/Students/Add';
-import EditStudent from '~/pages/Students/Edit';
-import ListSubscriptions from '~/pages/Subscriptions/List';
-import AddSubscription from '~/pages/Subscriptions/Add';
-import EditSubscription from '~/pages/Subscriptions/Edit';
-import ListEnrollments from '~/pages/Enrollments/List';
-import AddEnrollment from '~/pages/Enrollments/Add';
-import EditEnrollment from '~/pages/Enrollments/Edit';
+import Students from '~/pages/Students';
+import StudentForm from '~/pages/Students/Form';
+import Subscriptions from '~/pages/Subscriptions';
+import SubscriptionForm from '~/pages/Subscriptions/Form';
+import Enrollments from '~/pages/Enrollments';
+import EnrollmentForm from '~/pages/Enrollments/Form';
 import HelpRequests from '~/pages/HelpRequests';
 
 export default function Routes() {
@@ -20,42 +17,17 @@ export default function Routes() {
     <Switch>
       <Route path="/" exact component={SignIn} />
 
-      <Route path="/students" exact component={ListStudents} isPrivate />
-      <Route path="/students/add" exact component={AddStudent} isPrivate />
-      <Route path="/students/edit" exact component={EditStudent} isPrivate />
+      <Route path="/students" exact component={Students} isPrivate />
+      <Route path="/students/add" component={StudentForm} isPrivate />
+      <Route path="/students/:id" component={StudentForm} isPrivate />
 
-      <Route
-        path="/subscriptions"
-        exact
-        component={ListSubscriptions}
-        isPrivate
-      />
-      <Route
-        path="/subscriptions/add"
-        exact
-        component={AddSubscription}
-        isPrivate
-      />
-      <Route
-        path="/subscriptions/edit"
-        exact
-        component={EditSubscription}
-        isPrivate
-      />
+      <Route path="/subscriptions" exact component={Subscriptions} isPrivate />
+      <Route path="/subscriptions/add" component={SubscriptionForm} isPrivate />
+      <Route path="/subscriptions/:id" component={SubscriptionForm} isPrivate />
 
-      <Route path="/enrollments" exact component={ListEnrollments} isPrivate />
-      <Route
-        path="/enrollments/add"
-        exact
-        component={AddEnrollment}
-        isPrivate
-      />
-      <Route
-        path="/enrollments/edit"
-        exact
-        component={EditEnrollment}
-        isPrivate
-      />
+      <Route path="/enrollments" exact component={Enrollments} isPrivate />
+      <Route path="/enrollments/add" component={EnrollmentForm} isPrivate />
+      <Route path="/enrollments/:id" component={EnrollmentForm} isPrivate />
 
       <Route path="/requests" component={HelpRequests} isPrivate />
     </Switch>
