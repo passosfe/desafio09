@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { ButtonContainer } from './styles';
 
-export default function Button({ children }) {
+export default function Button({ children, type, onClick: action }) {
   function handleIcon() {
     switch (children) {
       case 'CADASTRAR': {
@@ -22,7 +22,11 @@ export default function Button({ children }) {
   }
 
   return (
-    <ButtonContainer back={children === 'VOLTAR'}>
+    <ButtonContainer
+      back={children === 'VOLTAR'}
+      onClick={action ? () => action() : null}
+      type={type}
+    >
       <div>{handleIcon()}</div>
       {children}
     </ButtonContainer>
@@ -31,4 +35,11 @@ export default function Button({ children }) {
 
 Button.propTypes = {
   children: PropTypes.string.isRequired,
+  type: PropTypes.string,
+  onClick: PropTypes.func,
+};
+
+Button.defaultProps = {
+  type: 'button',
+  onClick: null,
 };

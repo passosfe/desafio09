@@ -14,12 +14,25 @@ export const Table = styled.table`
     }
   }
 
-  tbody > tr:first-child > td {
-    padding: 16px 0;
-  }
+  tbody {
+    tr:first-child > td {
+      padding: 16px 0;
+    }
 
-  tbody > tr + tr > td {
-    padding: 16px 0;
-    border-top: 1px solid #eee;
+    tr + tr > td {
+      padding: 16px 0;
+      border-top: 1px solid #eee;
+    }
+
+    tr > td > div {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+
+      a {
+        font-size: 15px;
+        color: #4d85ee;
+      }
+    }
   }
 `;

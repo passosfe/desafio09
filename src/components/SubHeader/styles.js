@@ -8,6 +8,11 @@ export const SubHeader = styled.div`
   padding: 20px 0;
   margin-top: 10px;
 
+  strong {
+    color: #444;
+    font-size: 24px;
+  }
+
   div {
     display: flex;
     flex-direction: row;

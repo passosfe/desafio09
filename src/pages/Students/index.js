@@ -1,19 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
-import { Container, Search } from './styles';
+import api from '~/services/api';
+
 import Button from '~/components/Button';
 import { SubHeader } from '~/components/SubHeader/styles';
-import { Title } from '~/components/Title/styles';
 import { ContentWrapper } from '~/components/ContentWrapper/styles';
 import { Table } from '~/components/Table/styles';
+import { TextButton } from '~/components/TextButton/styles';
+
+import { Container, Search } from './styles';
+import history from '~/services/history';
 
 export default function Students() {
+  const [students, setStudents] = useState([]);
+
+  useEffect(() => {
+    async function loadStudents() {
+      const response = await api.get('students');
+
+      setStudents(response.data);
+    }
+
+    loadStudents();
+  }, []);
+
+  function handleAdd() {
+    console.tron.log('teste');
+    history.push('/students/add');
+  }
+
+  function handleDelete(id) {
+    console.tron.log(id);
+  }
+
   return (
     <Container>
       <SubHeader>
-        <Title>Gerenciando alunos</Title>
+        <strong>Gerenciando alunos</strong>
         <div>
-          <Button>CADASTRAR</Button>
+          <Button onClick={() => handleAdd()}>CADASTRAR</Button>
           <Search type="text" placeholder="Buscar aluno" />
         </div>
       </SubHeader>
@@ -27,30 +53,21 @@ export default function Students() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Cha Ji-Hun</td>
-              <td>example@teste.com</td>
-              <td>20</td>
-              <td>editar | apagar</td>
-            </tr>
-            <tr>
-              <td>Cha Ji-Hun</td>
-              <td>example@teste.com</td>
-              <td>20</td>
-              <td>editar | apagar</td>
-            </tr>
-            <tr>
-              <td>Cha Ji-Hun</td>
-              <td>example@teste.com</td>
-              <td>20</td>
-              <td>editar | apagar</td>
-            </tr>
-            <tr>
-              <td>Cha Ji-Hun</td>
-              <td>example@teste.com</td>
-              <td>20</td>
-              <td>editar | apagar</td>
-            </tr>
+            {students.map(student => (
+              <tr key={String(student.id)}>
+                <td>{student.name}</td>
+                <td>{student.email}</td>
+                <td>{student.age}</td>
+                <td>
+                  <div>
+                    <Link to={`/students/${student.id}`}>editar</Link>
+                    <TextButton onClick={() => handleDelete(student.id)}>
+                      apagar
+                    </TextButton>
+                  </div>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </Table>
       </ContentWrapper>

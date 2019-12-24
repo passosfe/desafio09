@@ -9,15 +9,21 @@ import './config/reactotronConfig';
 import Routes from './routes';
 import history from './services/history';
 
+import { store, persistor } from './store';
+
 import GlobalStyle from './styles/global';
 
 function App() {
   return (
-    <Router history={history}>
-      <Routes />
-      <GlobalStyle />
-      <ToastContainer autoClose={3000} />
-    </Router>
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <Router history={history}>
+          <Routes />
+          <GlobalStyle />
+          <ToastContainer autoClose={3000} />
+        </Router>
+      </PersistGate>
+    </Provider>
   );
 }
 
