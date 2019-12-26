@@ -12,6 +12,8 @@ import { TextButton } from '~/components/TextButton/styles';
 import { Container, ContentWrapper, Search } from './styles';
 import history from '~/services/history';
 import PageNavigation from '~/components/PageNavigation';
+import EmptyContainer from '~/components/EmptyContainer';
+import { Loading } from '~/components/Loading/styles';
 
 export default function Students() {
   const [students, setStudents] = useState([]);
@@ -30,7 +32,6 @@ export default function Students() {
           name: filter,
         },
       });
-      console.tron.log(response.headers);
 
       setStudents(response.data);
       setPages(Number(response.headers.num_pages));
@@ -45,17 +46,19 @@ export default function Students() {
     loadStudents();
   }, [loadStudents]);
 
-  function handleDelete(student) {
-    // ConfirmDialog({
-    //   title: 'Apagar aluno',
-    //   onConfirm: deleteUser,
-    //   content: (
-    //     <p>
-    //       Tem certeza que deseja apagar o aluno <strong>{student.name} </strong>
-    //       ?
-    //     </p>
-    //   ),
-    // });
+  async function handleDelete(student) {
+    try {
+      await api.delete(`/students/${student.id}`);
+      toast.success('Aluno deletado com sucesso');
+
+      if (currentPage === 1) {
+        loadStudents();
+      } else {
+        setCurrentPage(1);
+      }
+    } catch (error) {
+      toast.error('Erro ao deletar aluno');
+    }
   }
 
   return (
@@ -74,7 +77,7 @@ export default function Students() {
         </div>
       </SubHeader>
       <ContentWrapper>
-        {students.length > 0 ? (
+        {(loading && students.length <= 0) || students.length > 0 ? (
           <>
             <Table>
               <thead>
@@ -100,7 +103,15 @@ export default function Students() {
                         >
                           editar
                         </Link>
-                        <TextButton onClick={() => handleDelete(student.id)}>
+                        <TextButton
+                          type="button"
+                          onClick={() =>
+                            // eslint-disable-next-line no-alert
+                            window.confirm(
+                              'Voce tem certeza que quer excluir este aluno?'
+                            ) && handleDelete(student)
+                          }
+                        >
                           apagar
                         </TextButton>
                       </div>
@@ -116,8 +127,9 @@ export default function Students() {
             />
           </>
         ) : (
-          <h1>nada</h1>
+          <EmptyContainer />
         )}
+        {loading && <Loading />}
       </ContentWrapper>
     </Container>
   );
