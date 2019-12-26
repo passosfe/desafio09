@@ -17,11 +17,6 @@ export const ContentWrapper = styled.div`
     color: #444;
   }
 
-  span {
-    margin-top: 10px;
-    color: #fb6f91;
-  }
-
   & > input {
     margin-bottom: 20px;
   }

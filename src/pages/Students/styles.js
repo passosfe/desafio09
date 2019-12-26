@@ -5,6 +5,12 @@ export const Container = styled.div`
   margin: 0 auto;
 `;
 
+export const ContentWrapper = styled.div`
+  background: #fff;
+  padding: 30px 30px 14px;
+  border-radius: 4px;
+`;
+
 export const Search = styled.input`
   margin-left: 16px;
   border: 1px solid #ddd;
