@@ -15,7 +15,6 @@ import Button from '~/components/Button';
 
 export default function SubscriptionForm({ match }) {
   const [subscription, setSubscription] = useState({});
-  const [duration, setDuration] = useState(0);
   const [price, setPrice] = useState(0);
 
   const { id } = match.params;
@@ -25,23 +24,19 @@ export default function SubscriptionForm({ match }) {
     duration: Yup.number()
       .typeError('Duração deve ser um numero')
       .required('Insira uma duração'),
-    price: Yup.number()
-      .typeError('Preço deve ser um número')
-      .required('O preço é obrigatório'),
   });
 
   useEffect(() => {
     async function loadSubscription() {
       const response = await api.get(`subscriptions/${id}`);
 
-      const { title, duration: unfDuration, price: unfPrice } = response.data;
+      const { title, duration, price: unfPrice } = response.data;
 
       setSubscription({
         title,
-        total: formatPrice(Number(unfDuration) * Number(unfPrice)),
+        duration,
+        total: formatPrice(Number(duration) * Number(unfPrice)),
       });
-
-      setDuration(unfDuration);
       setPrice(unfPrice);
     }
 
@@ -50,7 +45,8 @@ export default function SubscriptionForm({ match }) {
     }
   }, [id]);
 
-  async function handleSubmit({ title }) {
+  async function handleSubmit({ title, duration }) {
+    console.tron.log(title, duration, price);
     if (id) {
       try {
         await api.put(`subscriptions/${id}`, {
@@ -95,7 +91,7 @@ export default function SubscriptionForm({ match }) {
           <div>
             <div>
               <strong>DURAÇÃO (em meses)</strong>
-              <Input name="duration" type="number" value={duration} />
+              <Input name="duration" type="number" />
             </div>
             <div>
               <strong>PREÇO MENSAL</strong>
@@ -104,11 +100,8 @@ export default function SubscriptionForm({ match }) {
                 value={price}
                 thousandSeparator
                 prefix="R$ "
-                onValueChange={({ floatValue, formattedValue }) => {
-                  console.tron.log(floatValue);
-                  console.tron.log(formattedValue);
-                  // setValue(formattedValue);
-                  // onChange(floatValue);
+                onValueChange={({ floatValue }) => {
+                  setPrice(floatValue);
                 }}
                 decimalScale="2"
                 allowNegative={false}
