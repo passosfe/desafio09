@@ -88,7 +88,7 @@ export default function StudentForm({ match }) {
     <Container>
       <Form onSubmit={handleSubmit} initialData={student} schema={schema}>
         <SubHeader>
-          <strong>{id ? 'Edição de aluno' : 'Cadastro de aluno'}</strong>
+          <h1>{id ? 'Edição de aluno' : 'Cadastro de aluno'}</h1>
           <div>
             <Button onClick={() => history.goBack()}>VOLTAR</Button>
             <Button type="submit">SALVAR</Button>
