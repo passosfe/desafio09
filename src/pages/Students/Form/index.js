@@ -124,7 +124,7 @@ export default function StudentForm({ match }) {
 StudentForm.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.number,
+      id: PropTypes.string,
     }),
   }),
 };

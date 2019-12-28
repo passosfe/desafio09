@@ -18,7 +18,7 @@ import PageNavigation from '~/components/PageNavigation';
 import EmptyContainer from '~/components/EmptyContainer';
 import { Loading } from '~/components/Loading/styles';
 
-export default function Students() {
+export default function Subscriptions() {
   const [subscriptions, setSubscriptions] = useState([]);
   const [pages, setPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -101,7 +101,7 @@ export default function Students() {
                     <td>{subscription.formattedPrice}</td>
                     <td>
                       <div>
-                        <Link to={`/subscriptions/${Number(subscription.id)}`}>
+                        <Link to={`/subscriptions/${subscription.id}`}>
                           editar
                         </Link>
                         <TextButton
@@ -109,7 +109,7 @@ export default function Students() {
                           onClick={() =>
                             // eslint-disable-next-line no-alert
                             window.confirm(
-                              'Voce tem certeza que quer excluir este aluno?'
+                              'Voce tem certeza que quer excluir este plano?'
                             ) && handleDelete(subscription)
                           }
                         >
