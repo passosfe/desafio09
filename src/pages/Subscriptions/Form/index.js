@@ -46,7 +46,6 @@ export default function SubscriptionForm({ match }) {
   }, [id]);
 
   async function handleSubmit({ title, duration }) {
-    console.tron.log(title, duration, price);
     if (id) {
       try {
         await api.put(`subscriptions/${id}`, {

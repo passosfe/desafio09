@@ -4,7 +4,7 @@ export const TextButton = styled.button`
   background: none;
   border: 0;
   font-size: 15px;
-  color: #de3b3b;
+  color: ${props => (props.children === 'responder' ? '#4d85ee' : '#de3b3b')};
 
   a + & {
     margin-left: 23px;

@@ -15,6 +15,8 @@ export const Table = styled.table`
   }
 
   tbody {
+    color: #666;
+
     tr:first-child > td {
       padding: 16px 0;
     }

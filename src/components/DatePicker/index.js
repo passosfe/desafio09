@@ -1,15 +1,31 @@
 import React, { useRef, useEffect, useState } from 'react';
-import ReactDatePicker from 'react-datepicker';
+import ReactDatePicker, { registerLocale } from 'react-datepicker';
 import PropTypes from 'prop-types';
+import pt from 'date-fns/locale/pt';
 
 import { useField } from '@rocketseat/unform';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
-export default function DatePicker({ name, disabled, placeholder, onChange }) {
+registerLocale('br', pt);
+
+export default function DatePicker({
+  name,
+  disabled,
+  placeholder,
+  onChange,
+  initialData,
+}) {
   const ref = useRef(null);
   const { fieldName, registerField, defaultValue, error } = useField(name);
-  const [startDate, setStartDate] = useState(defaultValue);
+  const [startDate, setStartDate] = useState();
+
+  useEffect(() => {
+    if (defaultValue) {
+      setStartDate(new Date(defaultValue));
+      onChange(new Date(defaultValue));
+    }
+  }, [defaultValue, onChange]);
 
   useEffect(() => {
     registerField({
@@ -26,9 +42,10 @@ export default function DatePicker({ name, disabled, placeholder, onChange }) {
     <>
       <ReactDatePicker
         name={fieldName}
-        selected={startDate}
+        selected={startDate || initialData}
         minDate={new Date()}
-        locale="pt-BR"
+        locale="br"
+        dateFormat="dd/MM/yyyy"
         readOnly={disabled}
         disabled={disabled}
         onChange={date => {
@@ -47,10 +64,17 @@ export default function DatePicker({ name, disabled, placeholder, onChange }) {
 DatePicker.propTypes = {
   name: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
-  placeholder: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  placeholder: PropTypes.string,
+  onChange: PropTypes.func,
+  initialData: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.instanceOf(Date),
+  ]),
 };
 
 DatePicker.defaultProps = {
   disabled: false,
+  placeholder: '',
+  onChange: () => {},
+  initialData: null,
 };

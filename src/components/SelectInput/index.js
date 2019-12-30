@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { toast } from 'react-toastify';
 import { useField } from '@rocketseat/unform';
 import PropTypes from 'prop-types';
 
@@ -11,15 +10,37 @@ export default function SelectInput({ name, from, setSubscription, ...rest }) {
   const ref = useRef(null);
   const { fieldName, registerField, defaultValue, error } = useField(name);
 
+  const [selectedValue, setSelectedValue] = useState(defaultValue);
   const [options, setOptions] = useState([]);
-  const [filter, setFilter] = useState('');
+
+  const defaultOption = useCallback(() => {
+    async function getDefaultField() {
+      const response = await api.get(`${from}/${defaultValue}`);
+
+      const data = {
+        id: response.data.id,
+        title: name === 'name' ? response.data.name : response.data.title,
+        data: response.data,
+      };
+      setOptions([data]);
+      setSelectedValue(data);
+
+      if (setSubscription) setSubscription(data);
+    }
+
+    getDefaultField();
+  }, [defaultValue, from, name, setSubscription]);
+
+  useEffect(() => {
+    defaultOption();
+  }, [defaultOption]);
 
   const loadOptions = useCallback(
     (inputValue = '') => {
       async function load() {
         const response = await api.get(from, {
           params: {
-            per_page: 2,
+            per_page: 10,
             name: inputValue,
           },
         });
@@ -30,6 +51,7 @@ export default function SelectInput({ name, from, setSubscription, ...rest }) {
           data: option,
         }));
 
+        setOptions(data);
         return data;
       }
 
@@ -39,9 +61,14 @@ export default function SelectInput({ name, from, setSubscription, ...rest }) {
   );
 
   function getDefaultValue() {
-    if (!defaultValue) return null;
+    if (!defaultValue || !options) return null;
 
-    return options.filter(option => defaultValue.includes(option.id));
+    return options.filter(option => option.id === defaultValue);
+  }
+
+  function parseSelectValue(selectRef) {
+    const selectValue = selectRef.props.value;
+    return selectValue ? selectValue.id : '';
   }
 
   useEffect(() => {
@@ -49,6 +76,10 @@ export default function SelectInput({ name, from, setSubscription, ...rest }) {
       name: fieldName,
       ref: ref.current,
       path: 'state.value',
+      parseValue: parseSelectValue,
+      clearValue: selectRef => {
+        selectRef.select.clearValue();
+      },
     });
 
     loadOptions();
@@ -58,15 +89,16 @@ export default function SelectInput({ name, from, setSubscription, ...rest }) {
     <>
       <Input
         name={fieldName}
-        cacheOptions
+        defaultOptions={defaultValue ? options : true}
         loadOptions={loadOptions}
         ref={ref}
-        // defaultValue={getDefaultValue()}
-        onInputChange={e => e.target && setFilter(e.target.value)}
-        // onChange={value =>
-        //   setSubscription &&
-        //   setSubscription(options.find(option => option.id === value))
-        // }
+        value={selectedValue}
+        defaultValue={getDefaultValue()}
+        onChange={value => {
+          console.tron.log(value);
+          setSelectedValue(value);
+          setSubscription(value);
+        }}
         getOptionValue={option => option.id}
         getOptionLabel={option => option.title}
         {...rest}
@@ -80,4 +112,9 @@ export default function SelectInput({ name, from, setSubscription, ...rest }) {
 SelectInput.propTypes = {
   name: PropTypes.string.isRequired,
   from: PropTypes.string.isRequired,
+  setSubscription: PropTypes.func,
+};
+
+SelectInput.defaultProps = {
+  setSubscription: () => {},
 };

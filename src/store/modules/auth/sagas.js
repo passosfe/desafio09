@@ -23,7 +23,6 @@ export function* signIn({ payload }) {
 
     history.push('/students');
   } catch (err) {
-    console.tron.log(err);
     toast.error('Falha na autenticação, verifique seus dados');
     yield put(signFailure());
   }

@@ -52,8 +52,6 @@ export default function Enrollments() {
         ),
       }));
 
-      console.tron.log(data);
-
       setEnrollments(data);
       setPages(Number(response.headers.num_pages));
     } catch (err) {
